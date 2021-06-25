@@ -8,9 +8,17 @@
     },
 
     "mot": {
-        "detector_type": "YOLO",
+        "detector_type": "YOLOV5",
         "detector_frame_skip": 5,
 
+        "yolo_v5_detector": {
+            "model": "YOLOV5",
+            "class_ids": [80],
+            "engine_file": "/home/amit/ssd/git_repos/git_repo_fastMot/FastMOT/fastmot/models/yolo5/yolov5s.engine",
+            "plugins_library": "/home/amit/ssd/git_repos/git_repo_fastMot/FastMOT/fastmot/models/yolo5/libmyplugins.so",
+            "conf_threshold": 0.5,
+            "iou_threshold":0.4
+        },
         "ssd_detector": {
             "model": "SSDInceptionV2",
             "class_ids": [1],

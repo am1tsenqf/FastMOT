@@ -86,6 +86,11 @@ def main():
             log.close()
         stream.release()
         cv2.destroyAllWindows()
+        
+        if config['mot']['detector_type'] == 'YOLOV5':
+            mot.destroy_yolo5_detector()
+
+        
 
     if args.mot:
         # timing statistics

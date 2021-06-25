@@ -2,7 +2,7 @@ from enum import Enum
 import logging
 import cv2
 
-from .detector import SSDDetector, YOLODetector, PublicDetector
+from .detector import SSDDetector, YOLODetector, PublicDetector, YOLOV5Detector
 from .feature_extractor import FeatureExtractor
 from .tracker import MultiTracker
 from .utils import Profiler
@@ -17,6 +17,7 @@ class DetectorType(Enum):
     SSD = 0
     YOLO = 1
     PUBLIC = 2
+    YOLOV5 = 3
 
 
 class MOT:
@@ -47,11 +48,16 @@ class MOT:
         LOGGER.info('Loading detector model...')
         if self.detector_type == DetectorType.SSD:
             self.detector = SSDDetector(self.size, config['ssd_detector'])
+
         elif self.detector_type == DetectorType.YOLO:
             self.detector = YOLODetector(self.size, config['yolo_detector'])
+
         elif self.detector_type == DetectorType.PUBLIC:
             self.detector = PublicDetector(self.size, self.detector_frame_skip,
                                            config['public_detector'])
+
+        elif self.detector_type == DetectorType.YOLOV5:
+            self.detector = YOLOV5Detector(self.size, self.detector_frame_skip, config['yolo_v5_detector'])
 
         LOGGER.info('Loading feature extractor model...')
         self.extractor = FeatureExtractor(config['feature_extractor'])
@@ -110,6 +116,9 @@ class MOT:
         if self.draw:
             self._draw(frame, detections)
         self.frame_count += 1
+    
+    def destroy_yolo5_detector(self):
+        self.detector.destroy()
 
     @staticmethod
     def print_timing_info():
